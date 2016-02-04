@@ -14,6 +14,7 @@ Running tests (requires docker-compose)
   * Test with Option
   * Test with empty tables
   * Add Postgres JSON operators
+  * Add support to the Async drivers
   * And all other types that Postgres has
 
 ## License
