@@ -1,16 +1,17 @@
-package io.gustavoamigo.quill.pgsql
+package io.gustavoamigo.quill.pgsql.encoding.datetime
 
 import java.time._
 import java.util.Date
 
 import io.getquill._
 import io.getquill.naming.CamelCase
+import io.gustavoamigo.quill.pgsql.PostgresJdbcSource
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll
 
-import scala.util.{Try, Success, Failure}
+import scala.util.{Failure, Success, Try}
 
-class EncodersSpec extends Specification with BeforeAll {
+class JavaDateTimeSupportSpec extends Specification with BeforeAll {
 
   object db extends PostgresJdbcSource[CamelCase]
 

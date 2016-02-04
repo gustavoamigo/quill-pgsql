@@ -1,7 +1,6 @@
 package io.gustavoamigo.quill.pgsql.encoding.json.play
 
 import java.sql.{Types, PreparedStatement}
-
 import io.getquill.source.jdbc.JdbcSource
 
 trait JsonEncoder {

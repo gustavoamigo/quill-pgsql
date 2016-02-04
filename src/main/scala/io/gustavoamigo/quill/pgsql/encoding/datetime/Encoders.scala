@@ -1,9 +1,7 @@
-package io.gustavoamigo.quill.pgsql.encoding
+package io.gustavoamigo.quill.pgsql.encoding.datetime
 
 import java.sql.{PreparedStatement, Timestamp, Types}
-import java.time
-
-import io.getquill._
+import java.time._
 import io.getquill.source.jdbc.JdbcSource
 
 trait Encoders {
@@ -28,12 +26,12 @@ trait Encoders {
       }
     }
 
-  implicit val localDateTimeEncoder: Encoder[time.LocalDateTime] = encoder { (row: PreparedStatement) =>
-    (index: Int, d: time.LocalDateTime) => row.setObject(index, Timestamp.valueOf(d), Types.TIMESTAMP)
+  implicit val localDateTimeEncoder: Encoder[LocalDateTime] = encoder { (row: PreparedStatement) =>
+    (index: Int, d: LocalDateTime) => row.setObject(index, Timestamp.valueOf(d), Types.TIMESTAMP)
   }
-  implicit val zonedDateTimeEncoder: Encoder[time.ZonedDateTime] = genericEncoder(_.format(bpTzDateTimeFormatter))
-  implicit val localDateEncoder: Encoder[time.LocalDate] = genericEncoder(_.format(bpDateFormatter))
-  implicit val localTimeEncoder: Encoder[time.LocalTime] = genericEncoder(_.format(bpTimeFormatter))
-  implicit val offsetTimeEncoder: Encoder[time.OffsetTime] = genericEncoder(_.format(bpTzTimeFormatter))
+  implicit val zonedDateTimeEncoder: Encoder[ZonedDateTime] = genericEncoder(_.format(bpTzDateTimeFormatter))
+  implicit val localDateEncoder: Encoder[LocalDate] = genericEncoder(_.format(bpDateFormatter))
+  implicit val localTimeEncoder: Encoder[LocalTime] = genericEncoder(_.format(bpTimeFormatter))
+  implicit val offsetTimeEncoder: Encoder[OffsetTime] = genericEncoder(_.format(bpTzTimeFormatter))
 
 }

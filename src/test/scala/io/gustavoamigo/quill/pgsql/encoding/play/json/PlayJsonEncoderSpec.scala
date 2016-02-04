@@ -1,14 +1,14 @@
-package io.gustavoamigo.quill.pgsql.json.play
+package io.gustavoamigo.quill.pgsql.encoding.play.json
 
+import io.getquill._
 import io.getquill.naming.CamelCase
 import io.gustavoamigo.quill.pgsql.PostgresJdbcSource
 import io.gustavoamigo.quill.pgsql.encoding.json.play.PlayJsonSupport
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll
 import play.api.libs.json._
-import io.getquill._
 
-import scala.util.{Try, Failure, Success}
+import scala.util.{Failure, Success, Try}
 
 class PlayJsonEncoderSpec extends Specification with BeforeAll {
 

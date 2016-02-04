@@ -1,9 +1,9 @@
-package io.gustavoamigo.quill.pgsql.encoding
+package io.gustavoamigo.quill.pgsql.encoding.datetime
 
 import java.time.format.{DateTimeFormatter, DateTimeFormatterBuilder}
 import java.time.temporal.ChronoField
 
-object Formatters {
+private[datetime] object Formatters {
   val bpDateFormatter = DateTimeFormatter.ISO_LOCAL_DATE
   val bpTimeFormatter = DateTimeFormatter.ISO_LOCAL_TIME
   val bpTzTimeFormatter =

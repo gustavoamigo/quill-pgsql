@@ -1,7 +1,17 @@
-db:
+postgres:
   image: postgres
   ports:
     - "5432:5432"
   environment:
     - POSTGRES_PASSWORD=docker
     - POSTGRES_USER=docker
+
+test:
+  image: 1science/sbt
+  command: sbt test
+  links:
+    - postgres:postgres
+  volumes:
+    - ./:/app
+    - ~/.ivy2:/root/.ivy2
+    - ~/.m2:/root/.m2
