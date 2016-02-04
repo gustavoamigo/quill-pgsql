@@ -1,5 +1,5 @@
 # quill-pgsql
-Extension to support Postgres data types with Quill
+Extension to support Postgres data types with [Quill](https://github.com/getquill/quill)
 
 Warning: Some code borrowed from [slick-pg](https://github.com/tminglei/slick-pg)
 
