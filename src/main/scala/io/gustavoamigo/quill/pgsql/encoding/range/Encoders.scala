@@ -4,6 +4,8 @@ import java.sql.{Types, PreparedStatement}
 
 import io.getquill.source.jdbc.JdbcSource
 
+import scala.collection.immutable.NumericRange
+
 trait Encoders {
   this: JdbcSource[_, _] =>
 
@@ -17,6 +19,9 @@ trait Encoders {
     }
   }
 
-  implicit val tupleEncoder: Encoder[(Int, Int)] = genericEncoder(t => s"[${t._1}, ${t._2}]")
+  private def rangeFormat[T](first: T, last: T) = s"[${first}, ${last}]"
+
+  implicit val intTupleEncoder: Encoder[(Int, Int)] = genericEncoder(t => rangeFormat(t._1, t._2))
+  implicit val intRangeEncoder: Encoder[NumericRange[Int]] = genericEncoder(r => rangeFormat(r.head, r.last))
 }
 

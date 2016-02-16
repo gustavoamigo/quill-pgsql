@@ -4,6 +4,7 @@ import java.sql.ResultSet
 
 import io.getquill.source.jdbc.JdbcSource
 
+import scala.collection.immutable.NumericRange
 import scala.util.matching.Regex.Match
 
 trait Decoders {
@@ -18,13 +19,16 @@ trait Decoders {
   }
 
   private def firstInRange(m: Match) = m.group(1).toInt
-  private def lastInRange(m: Match) = m.group(2).toInt - 1
+  private def lastInRange(m: Match) = m.group(2).toInt
 
   private val rangePattern = """\[(\d+),(\d+)\)""".r
 
-  implicit val intTupleDecoder: Decoder[(Int, Int)] = genericDecoder(s => {
+  private def decode[T](transform: Match => T) = genericDecoder(s =>
     rangePattern.findFirstMatchIn(s) match {
-      case Some(m) => (firstInRange(m), lastInRange(m))
+      case Some(matcher) => transform(matcher)
     }
-  })
+  )
+
+  implicit val intTupleDecoder: Decoder[(Int, Int)] = decode(m => (firstInRange(m), lastInRange(m) - 1))
+  implicit val intRangeDecoder: Decoder[NumericRange[Int]] = decode(m => Range.Int(firstInRange(m), lastInRange(m), 1))
 }
