@@ -1,4 +1,4 @@
-package io.gustavoamigo.quill.pgsql.encoding.range
+package io.gustavoamigo.quill.pgsql.encoding.range.numeric
 
 import java.sql.ResultSet
 

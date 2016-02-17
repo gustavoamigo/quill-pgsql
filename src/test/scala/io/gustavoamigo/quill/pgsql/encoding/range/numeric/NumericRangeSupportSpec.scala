@@ -1,4 +1,4 @@
-package io.gustavoamigo.quill.pgsql.encoding.range
+package io.gustavoamigo.quill.pgsql.encoding.range.numeric
 
 import io.getquill._
 import io.getquill.naming.CamelCase
@@ -8,9 +8,9 @@ import org.specs2.specification.BeforeAll
 
 import scala.collection.immutable.NumericRange
 
-class RangeSupportSpec extends Specification with BeforeAll {
+class NumericRangeSupportSpec extends Specification with BeforeAll {
 
-  object db extends PostgresJdbcSource[CamelCase] with RangeSupport
+  object db extends PostgresJdbcSource[CamelCase] with NumericRangeSupport
 
   def beforeAll = {
     db.execute("DROP TABLE IF EXISTS EncodeRange")
@@ -20,10 +20,7 @@ class RangeSupportSpec extends Specification with BeforeAll {
         |   name TEXT,
         |   ir INT4RANGE,
         |   br INT8RANGE,
-        |   nr NUMRANGE,
-        |   tsr TSRANGE,
-        |   tstzr TSTZRANGE,
-        |   dr DATERANGE)
+        |   nr NUMRANGE)
         | """.stripMargin
     )
   }
