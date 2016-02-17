@@ -28,4 +28,6 @@ trait Decoders {
   implicit val intTupleDecoder: Decoder[(Int, Int)] = decode((s1, s2) => (s1.toInt, s2.toInt - 1))
   implicit val intRangeDecoder: Decoder[NumericRange[Int]] = decode((s1, s2) => Range.Int(s1.toInt, s2.toInt, 1))
   implicit val bigIntTupleDecoder: Decoder[(BigInt, BigInt)] = decode((s1, s2) => (BigInt(s1), BigInt(s2) - BigInt(1)))
+  implicit val bigIntRangeDecoder: Decoder[NumericRange[BigInt]] =
+    decode((s1, s2) => Range.BigInt(BigInt(s1), BigInt(s2), BigInt(1)))
 }
