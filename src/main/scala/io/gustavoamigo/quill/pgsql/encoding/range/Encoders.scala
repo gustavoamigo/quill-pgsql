@@ -29,5 +29,7 @@ trait Encoders {
   implicit val longRangeEncoder: Encoder[NumericRange[Long]] = genericEncoder(r => rangeFormat(r.head, r.last))
   implicit val doubleTupleEncoder: Encoder[(Double, Double)] = genericEncoder(t => rangeFormat(t._1, t._2))
   implicit val doubleRangeEncoder: Encoder[NumericRange[Double]] = genericEncoder(r => rangeFormat(r.head, r.last))
+  implicit val bigDecimalTupleEncoder: Encoder[(BigDecimal, BigDecimal)] = genericEncoder(t => rangeFormat(t._1, t._2))
+  implicit val bigDecimalRangeEncoder: Encoder[NumericRange[BigDecimal]] = genericEncoder(r => rangeFormat(r.head, r.last))
 }
 

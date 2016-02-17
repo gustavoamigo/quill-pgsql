@@ -36,6 +36,8 @@ class RangeSupportSpec extends Specification with BeforeAll {
   case class EncodeLongRange(name: String, br: NumericRange[Long])
   case class EncodeDoubleTuple(name: String, nr: (Double, Double))
   case class EncodeDoubleRange(name: String, nr: NumericRange[Double])
+  case class EncodeBigDecimalTuple(name: String, nr: (BigDecimal, BigDecimal))
+  case class EncodeBigDecimalRange(name: String, nr: NumericRange[BigDecimal])
 
   "Tuple (Int, Int) mapped to INT4RANGE" should {
     "just work" in {
@@ -124,7 +126,7 @@ class RangeSupportSpec extends Specification with BeforeAll {
   "Tuple (Double, Double) mapped to NUMRANGE" should {
     "just work" in {
       val encodeLongTuple = quote(query[EncodeDoubleTuple]("EncodeRange"))
-      val range: (Double, Double) = (1.2, 5.4)
+      val range: (Double, Double) = (1.2000006, 5.4)
       val insert = quote(encodeLongTuple.insert)
       val select = quote(encodeLongTuple.filter(_.name == "test7"))
 
@@ -137,12 +139,40 @@ class RangeSupportSpec extends Specification with BeforeAll {
 
   "NumericRange[Double] mapped to NUMRANGE" should {
     "just work" in {
-      val encodeBigIntRange = quote(query[EncodeDoubleRange]("EncodeRange"))
-      val range = Range.Double(1.2, 3.1234, 0.0001)
-      val insert = quote(encodeBigIntRange.insert)
-      val select = quote(encodeBigIntRange.filter(_.name == "test8"))
+      val encodeDoubleRange = quote(query[EncodeDoubleRange]("EncodeRange"))
+      val range = Range.Double(1.8, 2.004, 0.001)
+      val insert = quote(encodeDoubleRange.insert)
+      val select = quote(encodeDoubleRange.filter(_.name == "test8"))
 
       db.run(insert)(List(EncodeDoubleRange("test8", range)))
+
+      val found = db.run(select)
+      found.head.nr must beEqualTo(range)
+    }
+  }
+
+  "Tuple (BigDecimal, BigDecimal) mapped to NUMRANGE" should {
+    "just work" in {
+      val encodeBigDecimalTuple = quote(query[EncodeBigDecimalTuple]("EncodeRange"))
+      val range = (BigDecimal(15), BigDecimal(30.0102030405))
+      val insert = quote(encodeBigDecimalTuple.insert)
+      val select = quote(encodeBigDecimalTuple.filter(_.name == "test9"))
+
+      db.run(insert)(List(EncodeBigDecimalTuple("test9", range)))
+
+      val found = db.run(select)
+      found.head.nr must beEqualTo(range)
+    }
+  }
+
+  "NumericRange[BigDecimal] mapped to NUMRANGE" should {
+    "just work" in {
+      val encodeBigDecimalRange = quote(query[EncodeBigDecimalRange]("EncodeRange"))
+      val range = Range.BigDecimal.inclusive(BigDecimal(1.8), BigDecimal(2.001), BigDecimal(0.001))
+      val insert = quote(encodeBigDecimalRange.insert)
+      val select = quote(encodeBigDecimalRange.filter(_.name == "test10"))
+
+      db.run(insert)(List(EncodeBigDecimalRange("test10", range)))
 
       val found = db.run(select)
       found.head.nr must beEqualTo(range)

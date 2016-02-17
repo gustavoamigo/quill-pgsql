@@ -35,10 +35,15 @@ trait Decoders {
   implicit val doubleTupleDecoder: Decoder[(Double, Double)] = decode((s1, s2) => (s1.toDouble, s2.toDouble))
   implicit val doubleRangeDecoder: Decoder[NumericRange[Double]] = decode((s1, s2) => {
     val (d1, d2) = (s1.toDouble, s2.toDouble)
-    Range.Double(d1, d2, step(d1, d2))
+    Range.Double(d1, d2, step(d1, d2).doubleValue())
+  })
+  implicit val bigDecimalTupleDecoder: Decoder[(BigDecimal, BigDecimal)] = decode((s1, s2) => (BigDecimal(s1), BigDecimal(s2)))
+  implicit val bigDecimalRangeDecoder: Decoder[NumericRange[BigDecimal]] = decode((s1, s2) => {
+    val (d1, d2) = (BigDecimal(s1), BigDecimal(s2))
+    Range.BigDecimal.inclusive(d1, d2, step(d1, d2))
   })
 
-  private def step(d1: BigDecimal, d2: BigDecimal): Double = {
+  private def step(d1: BigDecimal, d2: BigDecimal): BigDecimal = {
     val fraction1 = d1.remainder(BigDecimal(1)).toString.length
     val fraction2 = d2.remainder(BigDecimal(1)).toString.length
 
