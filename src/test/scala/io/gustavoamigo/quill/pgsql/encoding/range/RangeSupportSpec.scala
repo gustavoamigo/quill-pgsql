@@ -28,18 +28,18 @@ class RangeSupportSpec extends Specification with BeforeAll {
     )
   }
 
-  case class EncodeIntRange1(name: String, ir: (Int, Int))
-  case class EncodeIntRange2(name: String, ir: NumericRange[Int])
-  case class EncodeBigIntRange1(name: String, br: (BigInt, BigInt))
+  case class EncodeIntTuple(name: String, ir: (Int, Int))
+  case class EncodeIntRange(name: String, ir: NumericRange[Int])
+  case class EncodeBigIntTuple(name: String, br: (BigInt, BigInt))
 
   "Tuple (Int, Int) mapped to INT4RANGE" should {
     "just work" in {
-      val encodeRange1 = quote(query[EncodeIntRange1]("EncodeRange"))
+      val encodeIntTuple = quote(query[EncodeIntTuple]("EncodeRange"))
       val range = (1, 5)
-      val insert = quote(encodeRange1.insert)
-      val select = quote(encodeRange1.filter(_.name == "test1"))
+      val insert = quote(encodeIntTuple.insert)
+      val select = quote(encodeIntTuple.filter(_.name == "test1"))
 
-      db.run(insert)(List(EncodeIntRange1("test1", range)))
+      db.run(insert)(List(EncodeIntTuple("test1", range)))
 
       val found = db.run(select)
       found.head.ir must beEqualTo(range)
@@ -48,12 +48,12 @@ class RangeSupportSpec extends Specification with BeforeAll {
 
   "NumericRange[Int] mapped to INT4RANGE" should {
     "just work" in {
-      val encodeRange1 = quote(query[EncodeIntRange2]("EncodeRange"))
+      val encodeIntRange = quote(query[EncodeIntRange]("EncodeRange"))
       val range = Range.Int(2, 8, 1)
-      val insert = quote(encodeRange1.insert)
-      val select = quote(encodeRange1.filter(_.name == "test2"))
+      val insert = quote(encodeIntRange.insert)
+      val select = quote(encodeIntRange.filter(_.name == "test2"))
 
-      db.run(insert)(List(EncodeIntRange2("test2", range)))
+      db.run(insert)(List(EncodeIntRange("test2", range)))
 
       val found = db.run(select)
       found.head.ir must beEqualTo(range)
@@ -62,12 +62,12 @@ class RangeSupportSpec extends Specification with BeforeAll {
 
   "Tuple (BigInt, BigInt) mapped to INT8RANGE" should {
     "just work" in {
-      val encodeRange1 = quote(query[EncodeBigIntRange1]("EncodeRange"))
+      val encodeBigIntTuple = quote(query[EncodeBigIntTuple]("EncodeRange"))
       val range = (BigInt(15), BigInt(30))
-      val insert = quote(encodeRange1.insert)
-      val select = quote(encodeRange1.filter(_.name == "test3"))
+      val insert = quote(encodeBigIntTuple.insert)
+      val select = quote(encodeBigIntTuple.filter(_.name == "test3"))
 
-      db.run(insert)(List(EncodeBigIntRange1("test3", range)))
+      db.run(insert)(List(EncodeBigIntTuple("test3", range)))
 
       val found = db.run(select)
       found.head.br must beEqualTo(range)
