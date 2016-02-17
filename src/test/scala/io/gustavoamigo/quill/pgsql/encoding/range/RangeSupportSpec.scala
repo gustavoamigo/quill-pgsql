@@ -32,6 +32,8 @@ class RangeSupportSpec extends Specification with BeforeAll {
   case class EncodeIntRange(name: String, ir: NumericRange[Int])
   case class EncodeBigIntTuple(name: String, br: (BigInt, BigInt))
   case class EncodeBigIntRange(name: String, br: NumericRange[BigInt])
+  case class EncodeLongTuple(name: String, br: (Long, Long))
+  case class EncodeLongRange(name: String, br: NumericRange[Long])
 
   "Tuple (Int, Int) mapped to INT4RANGE" should {
     "just work" in {
@@ -83,6 +85,34 @@ class RangeSupportSpec extends Specification with BeforeAll {
       val select = quote(encodeBigIntRange.filter(_.name == "test4"))
 
       db.run(insert)(List(EncodeBigIntRange("test4", range)))
+
+      val found = db.run(select)
+      found.head.br must beEqualTo(range)
+    }
+  }
+
+  "Tuple (Long, Long) mapped to INT8RANGE" should {
+    "just work" in {
+      val encodeLongTuple = quote(query[EncodeLongTuple]("EncodeRange"))
+      val range: (Long, Long) = (290, 320)
+      val insert = quote(encodeLongTuple.insert)
+      val select = quote(encodeLongTuple.filter(_.name == "test5"))
+
+      db.run(insert)(List(EncodeLongTuple("test5", range)))
+
+      val found = db.run(select)
+      found.head.br must beEqualTo(range)
+    }
+  }
+
+  "NumericRange[Long] mapped to INT8RANGE" should {
+    "just work" in {
+      val encodeBigIntRange = quote(query[EncodeLongRange]("EncodeRange"))
+      val range = Range.Long(9000, 9002, 1)
+      val insert = quote(encodeBigIntRange.insert)
+      val select = quote(encodeBigIntRange.filter(_.name == "test6"))
+
+      db.run(insert)(List(EncodeLongRange("test6", range)))
 
       val found = db.run(select)
       found.head.br must beEqualTo(range)
