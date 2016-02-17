@@ -23,5 +23,6 @@ trait Encoders {
 
   implicit val intTupleEncoder: Encoder[(Int, Int)] = genericEncoder(t => rangeFormat(t._1, t._2))
   implicit val intRangeEncoder: Encoder[NumericRange[Int]] = genericEncoder(r => rangeFormat(r.head, r.last))
+  implicit val bigIntTupleEncoder: Encoder[(BigInt, BigInt)] = genericEncoder(t => rangeFormat(t._1, t._2))
 }
 
