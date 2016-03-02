@@ -13,11 +13,11 @@ trait Decoders extends GenericDecoder {
 
   private val rangePattern = """([0-9\- :]+)""".r
 
-  private def decoder[T](transform: (String, String) => T) = decode(s => {
+  private def decoder[T](map: String => T) = decode(s => {
     val dates = rangePattern.findAllIn(s).toList
-    transform(dates.head, dates.last)
+    (map(dates.head), map(dates.last))
   })
 
-  implicit val dateTupleDecoder: Decoder[(Date, Date)] = decoder(parse)
+  implicit val dateTupleDecoder: Decoder[(Date, Date)] = decoder(parseDate)
   implicit val localDateTimeTupleDecoder: Decoder[(LocalDateTime, LocalDateTime)] = decoder(parseLocalDateTime)
 }

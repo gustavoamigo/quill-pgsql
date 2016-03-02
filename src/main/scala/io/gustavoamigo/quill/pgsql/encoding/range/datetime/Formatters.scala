@@ -10,12 +10,11 @@ private[datetime] object Formatters {
 
   val dateTimeFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-  def parse(s1: String, s2: String): (Date, Date) = (df.parse(s1), df.parse(s2))
+  def parseDate(strDate: String): Date = df.parse(strDate)
 
-  def format(date: Date): String = df.format(date)
+  def formatDate(date: Date): String = df.format(date)
 
-  def parseLocalDateTime(s1: String, s2: String): (LocalDateTime, LocalDateTime) =
-    (LocalDateTime.parse(s1, dateTimeFormat), LocalDateTime.parse(s2, dateTimeFormat))
+  def parseLocalDateTime(strDate: String): LocalDateTime = LocalDateTime.parse(strDate, dateTimeFormat)
 
   def formatLocalDateTime(dateTime: LocalDateTime): String = dateTime.format(dateTimeFormat)
 }

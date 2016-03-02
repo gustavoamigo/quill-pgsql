@@ -23,7 +23,7 @@ trait Encoders {
 
   private def tuple[T](t: (T, T))(valToStr: T => String) = s"[${valToStr(t._1)}, ${valToStr(t._2)}]"
 
-  implicit val dateTupleEncoder: Encoder[(Date, Date)] = genericEncoder(tuple(_)(format))
+  implicit val dateTupleEncoder: Encoder[(Date, Date)] = genericEncoder(tuple(_)(formatDate))
   implicit val localDateTimeTupleEncoder: Encoder[(LocalDateTime, LocalDateTime)] =
     genericEncoder(tuple(_)(formatLocalDateTime))
 }

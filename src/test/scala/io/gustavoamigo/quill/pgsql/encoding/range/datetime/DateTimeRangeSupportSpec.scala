@@ -1,9 +1,8 @@
 package io.gustavoamigo.quill.pgsql.encoding.range.datetime
 
-import java.time.LocalDateTime
 import java.time.temporal.ChronoUnit
+import java.time.{Duration, LocalDateTime, ZonedDateTime}
 import java.util.Date
-import java.util.concurrent.TimeUnit
 
 import io.getquill._
 import io.getquill.naming.CamelCase
@@ -35,8 +34,8 @@ class DateTimeRangeSupportSpec extends Specification with BeforeAll {
   "Tuple (Date, Date) mapped to TSRANGE" should {
     "just work" in {
       val encodeDateTuple = quote(query[EncodeDateTuple]("EncodeRange"))
-      val now = new Date()
-      val tomorrowTime = System.currentTimeMillis() + TimeUnit.DAYS.toMillis(1l);
+      val now = new Date
+      val tomorrowTime = System.currentTimeMillis + Duration.ofDays(1).toMillis;
       val tomorrow = new Date(tomorrowTime)
 
       val insert = quote(encodeDateTuple.insert)
