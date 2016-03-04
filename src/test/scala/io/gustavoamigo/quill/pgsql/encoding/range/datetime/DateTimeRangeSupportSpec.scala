@@ -31,6 +31,8 @@ class DateTimeRangeSupportSpec extends Specification with BeforeAll {
 
   case class EncodeLocalDateTimeTuple(name: String, tsr: (LocalDateTime, LocalDateTime))
 
+  case class EncodeZonedDateTimeTuple(name: String, tstzr: (ZonedDateTime, ZonedDateTime))
+
   "Tuple (Date, Date) mapped to TSRANGE" should {
     "just work" in {
       val encodeDateTuple = quote(query[EncodeDateTuple]("EncodeRange"))
@@ -50,7 +52,7 @@ class DateTimeRangeSupportSpec extends Specification with BeforeAll {
     "just work" in {
       val encodeLocalDateTimeTuple = quote(query[EncodeLocalDateTimeTuple]("EncodeRange"))
       val now = LocalDateTime.now
-      val tomorrow = LocalDateTime.now.plusDays(1)
+      val tomorrow = now.plusDays(1)
 
       val insert = quote(encodeLocalDateTimeTuple.insert)
       val select = quote(encodeLocalDateTimeTuple.filter(_.name == "test2"))
@@ -59,6 +61,21 @@ class DateTimeRangeSupportSpec extends Specification with BeforeAll {
       found.head.tsr must beEqualTo(
         (now.truncatedTo(ChronoUnit.SECONDS), tomorrow.truncatedTo(ChronoUnit.SECONDS))
       )
+    }
+  }
+
+  "Tuple (ZonedDateTime, ZonedDateTime) mapped to TSTZRANGE" should {
+    "just work" in {
+      val encodeZonedDateTimeTuple = quote(query[EncodeZonedDateTimeTuple]("EncodeRange"))
+      val now = ZonedDateTime.now
+      val tomorrow = now.plusDays(1)
+
+      val insert = quote(encodeZonedDateTimeTuple.insert)
+      val select = quote(encodeZonedDateTimeTuple.filter(_.name == "test3"))
+      db.run(insert)(List(EncodeZonedDateTimeTuple("test3", (now, tomorrow))))
+      val found = db.run(select)
+      found.head.tstzr._1.toEpochSecond must beEqualTo(now.toEpochSecond)
+      found.head.tstzr._2.toEpochSecond must beEqualTo(tomorrow.toEpochSecond)
     }
   }
 }
