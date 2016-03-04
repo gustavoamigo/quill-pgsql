@@ -2,7 +2,7 @@ package io.gustavoamigo.quill.pgsql.encoding.range.datetime
 
 import java.text.SimpleDateFormat
 import java.time.temporal.ChronoField
-import java.time.{ZonedDateTime, LocalDateTime}
+import java.time.{LocalDate, ZonedDateTime, LocalDateTime}
 import java.time.format.{DateTimeFormatterBuilder, DateTimeFormatter}
 import java.util.Date
 
@@ -32,4 +32,8 @@ private[datetime] object Formatters {
   def parseZonedDateTime(strDate: String): ZonedDateTime = ZonedDateTime.parse(strDate, zonedDateTimeFormatter)
 
   def formatZonedDateTime(dateTime: ZonedDateTime): String = dateTime.format(zonedDateTimeFormatter)
+
+  def parseLocalDate(strDate: String): LocalDate = LocalDate.parse(strDate, DateTimeFormatter.ISO_LOCAL_DATE)
+
+  def formatLocalDate(dateTime: LocalDate): String = dateTime.format(DateTimeFormatter.ISO_LOCAL_DATE)
 }

@@ -1,6 +1,6 @@
 package io.gustavoamigo.quill.pgsql.encoding.range.datetime
 
-import java.time.{ZonedDateTime, LocalDateTime}
+import java.time.{LocalDate, ZonedDateTime, LocalDateTime}
 import java.util.Date
 
 import io.getquill.source.jdbc.JdbcSource
@@ -21,4 +21,5 @@ trait Decoders extends GenericDecoder {
   implicit val dateTupleDecoder: Decoder[(Date, Date)] = decoder(parseDate)
   implicit val localDateTimeTupleDecoder: Decoder[(LocalDateTime, LocalDateTime)] = decoder(parseLocalDateTime)
   implicit val zonedDateTimeTupleDecoder: Decoder[(ZonedDateTime, ZonedDateTime)] = decoder(parseZonedDateTime)
+  implicit val localDateTupleDecoder: Decoder[(LocalDate, LocalDate)] = decoder(parseLocalDate)
 }

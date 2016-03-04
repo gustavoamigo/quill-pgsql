@@ -1,7 +1,7 @@
 package io.gustavoamigo.quill.pgsql.encoding.range.datetime
 
 import java.sql.{PreparedStatement, Types}
-import java.time.{ZonedDateTime, LocalDateTime}
+import java.time.{LocalDate, ZonedDateTime, LocalDateTime}
 import java.util.Date
 
 import io.getquill.source.jdbc.JdbcSource
@@ -28,4 +28,6 @@ trait Encoders {
     genericEncoder(tuple(_)(formatLocalDateTime))
   implicit val zonedDateTimeTupleEncoder: Encoder[(ZonedDateTime, ZonedDateTime)] =
     genericEncoder(tuple(_)(formatZonedDateTime))
+  implicit val dateTimeTupleEncoder: Encoder[(LocalDate, LocalDate)] =
+    genericEncoder(t => s"[${formatLocalDate(t._1)}, ${formatLocalDate(t._2)})")
 }

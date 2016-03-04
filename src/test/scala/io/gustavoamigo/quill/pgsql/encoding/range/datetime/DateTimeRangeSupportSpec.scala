@@ -1,7 +1,7 @@
 package io.gustavoamigo.quill.pgsql.encoding.range.datetime
 
 import java.time.temporal.ChronoUnit
-import java.time.{Duration, LocalDateTime, ZonedDateTime}
+import java.time.{LocalDate, Duration, LocalDateTime, ZonedDateTime}
 import java.util.Date
 
 import io.getquill._
@@ -32,6 +32,8 @@ class DateTimeRangeSupportSpec extends Specification with BeforeAll {
   case class EncodeLocalDateTimeTuple(name: String, tsr: (LocalDateTime, LocalDateTime))
 
   case class EncodeZonedDateTimeTuple(name: String, tstzr: (ZonedDateTime, ZonedDateTime))
+
+  case class EncodeLocalDateTuple(name: String, dr: (LocalDate, LocalDate))
 
   "Tuple (Date, Date) mapped to TSRANGE" should {
     "just work" in {
@@ -76,6 +78,20 @@ class DateTimeRangeSupportSpec extends Specification with BeforeAll {
       val found = db.run(select)
       found.head.tstzr._1.toEpochSecond must beEqualTo(now.toEpochSecond)
       found.head.tstzr._2.toEpochSecond must beEqualTo(tomorrow.toEpochSecond)
+    }
+  }
+
+  "Tuple (LocalDate, LocalDate) mapped to DATERANGE" should {
+    "just work" in {
+      val encodeLocalDateTuple = quote(query[EncodeLocalDateTuple]("EncodeRange"))
+      val now = LocalDate.now
+      val tomorrow = now.plusDays(1)
+
+      val insert = quote(encodeLocalDateTuple.insert)
+      val select = quote(encodeLocalDateTuple.filter(_.name == "test4"))
+      db.run(insert)(List(EncodeLocalDateTuple("test4", (now, tomorrow))))
+      val found = db.run(select)
+      found.head.dr must beEqualTo((now, tomorrow))
     }
   }
 }
