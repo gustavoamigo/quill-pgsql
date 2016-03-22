@@ -10,9 +10,9 @@ import io.gustavoamigo.quill.pgsql.PostgresJdbcSource
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll
 
-class DateTimeRangeSupportSpec extends Specification with BeforeAll {
+class JavaDateTimeRangeSupportSpec extends Specification with BeforeAll {
 
-  object db extends PostgresJdbcSource[CamelCase] with DateTimeRangeSupport
+  object db extends PostgresJdbcSource[CamelCase] with JavaDateTimeRangeSupport
 
   def beforeAll = {
     db.execute("DROP TABLE IF EXISTS EncodeRange")
