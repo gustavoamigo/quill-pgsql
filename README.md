@@ -3,6 +3,8 @@ Extension to support Postgres data types with [Quill](https://github.com/getquil
 
 Warning: Some code borrowed from [slick-pg](https://github.com/tminglei/slick-pg)
 
+_Warning 2: As you can see, this project is defunct_
+
 ## Tests
 Running tests (requires docker-compose)
 
